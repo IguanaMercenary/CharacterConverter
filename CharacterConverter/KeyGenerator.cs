@@ -31,12 +31,6 @@ namespace CharacterConverter {
         private byte[,] roundKeyEight = new byte[MATRIX_ROWS, MATRIX_COLUMNS];
         private byte[,] roundKeyTen = new byte[MATRIX_ROWS, MATRIX_COLUMNS];
 
-
-
-
-
-
-
         /// <summary>
         /// Generates random numbers and puts them in to the matrix.
         /// Author: M.O
@@ -62,6 +56,17 @@ namespace CharacterConverter {
             tempKeyMatrix[0, 3] = (int) tempKeyMatrix.GetValue(3, 3);
             tempKeyMatrix[3, 3] = (int) temp;
             return tempKeyMatrix;
+        }
+
+        /// <summary>
+        /// Performs XOR on the column of the cypher key that has been rotated (all prior to Rcon), 
+        /// with the initial cypher key's first column.
+        /// </summary>
+        public void roundOneRoundOneKeyColumn() {
+            XORtable xor = new XORtable();
+            for (int i = 0; i < MATRIX_ROWS; i++) {
+                roundKeyOne[i,0] = xor.bitXOR(cypherKey[i, 0], roundKeyOne[i, 0]);
+            }
         }
 
         /// <summary>
@@ -98,16 +103,6 @@ namespace CharacterConverter {
             return avTemp;
         }
 
-        /// <summary>
-        /// Performs XOR on the column of the cypher key that has been rotated (all prior to Rcon), 
-        /// with the initial cypher key's first column.
-        /// </summary>
-        public void roundOneRoundOneKeyColumn() {
-            XORtable xor = new XORtable();
-            for (int i = 0; i < MATRIX_ROWS; i++) {
-                roundKeyOne[i,0] = xor.bitXOR(cypherKey[i, 0], roundKeyOne[i, 0]);
-            }
-        }
 
         /// <summary>
         /// Performs the sub-byte substitution - a non-linear substitution step where each byte is replaced 
